@@ -23,33 +23,33 @@ public class Accessor {
             field.setAccessible(true);
             field.set(value, value);
             return (T) field.get(value);
-        } catch (NoSuchFieldException var3) {
-            throw new RuntimeException(var3);
-        } catch (IllegalAccessException var4) {
-            throw new RuntimeException(var4);
-        } catch (IllegalArgumentException var5) {
-            throw new RuntimeException("Accessor：输入的值" + value + "无效", var5);
-        } catch (ClassCastException var6) {
-            throw new RuntimeException(var6);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Accessor：输入的值" + value + "无效", e);
+        } catch (ClassCastException e) {
+            throw new RuntimeException(e);
         }
     }
     
-    public static <T> T access(@Nonnull Field field, @Nonnull T exampleValue) {
+    public static <T,Y> Y access(@Nonnull Field field, @Nullable T instance) {
         try {
             field.setAccessible(true);
-            return (T) field.get(exampleValue);
-        } catch (IllegalArgumentException var3) {
-            throw new RuntimeException("Accessor：你最好不是乱输的" + exampleValue, var3);
-        } catch (SecurityException var4) {
-            throw new RuntimeException(var4);
-        } catch (IllegalAccessException var5) {
-            throw new RuntimeException("Accessor：快去告诉锈铁锭他Accessor有问题", var5);
-        } catch (ClassCastException var6) {
-            throw new RuntimeException("Accessor：不可能，绝对不可能", var6);
+            return (Y) field.get(instance);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Accessor：你最好不是乱输的" + instance, e);
+        } catch (SecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Accessor：快去告诉锈铁锭他Accessor有问题", e);
+        } catch (ClassCastException e){
+            throw new RuntimeException("Accessor：不可能，绝对不可能", e);
         }
     }
     
-    public static <T> T createInstant(@Nonnull Class<T> clazz, @Nullable Object... args) {
+    public static <T> T createInstance(@Nonnull Class<T> clazz, @Nullable Object... args) {
         try {
             Class[] parameterTypes = new Class[args.length];
             int i = 0;
@@ -65,18 +65,18 @@ public class Accessor {
             Constructor<T> constructor = clazz.getDeclaredConstructor(parameterTypes);
             constructor.setAccessible(true);
             return constructor.newInstance(args);
-        } catch (NoSuchMethodException var8) {
-            throw new RuntimeException("Accessor：你要不检查检查你传入的参数？或者使用另一个createInstant()？", var8);
-        } catch (InvocationTargetException var9) {
-            throw new RuntimeException(var9);
-        } catch (InstantiationException var10) {
-            throw new RuntimeException(var10);
-        } catch (IllegalAccessException var11) {
-            throw new RuntimeException("Accessor：快去告诉锈铁锭他Accessor有问题", var11);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Accessor：你要不检查检查你传入的参数？或者使用另一个createInstant()？", e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Accessor：快去告诉锈铁锭他Accessor有问题", e);
         }
     }
     
-    public static <T> T createInstant(@Nonnull Class<T> clazz, @Nonnull Class[] types, @Nonnull Object[] args) {
+    public static <T> T createInstance(@Nonnull Class<T> clazz, @Nonnull Class[] types, @Nonnull Object[] args) {
         try {
             if (types.length != args.length) {
                 logger.error("Accessor：参数类型数量和参数数量不一致！");
@@ -97,27 +97,27 @@ public class Accessor {
                 constructor.setAccessible(true);
                 return constructor.newInstance(args);
             }
-        } catch (NoSuchMethodException var9) {
-            throw new RuntimeException("Accessor：你要不检查检查你传入的参数类型？", var9);
-        } catch (InvocationTargetException var10) {
-            throw new RuntimeException(var10);
-        } catch (InstantiationException var11) {
-            throw new RuntimeException(var11);
-        } catch (IllegalAccessException var12) {
-            throw new RuntimeException("Accessor：快去告诉锈铁锭他Accessor有问题", var12);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Accessor：你要不检查检查你传入的参数类型？", e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Accessor：快去告诉锈铁锭他Accessor有问题", e);
         }
     }
     
-    public static <T, Y> Y invoke(@Nonnull Method method, @Nullable T instant, @Nullable Object... args) {
+    public static <T, Y> Y invoke(@Nonnull Method method, @Nullable T instance, @Nullable Object... args) {
         try {
             method.setAccessible(true);
-            return (Y) method.invoke(instant, args);
-        } catch (InvocationTargetException var4) {
-            throw new RuntimeException(var4);
-        } catch (IllegalAccessException var5) {
-            throw new RuntimeException(var5);
-        } catch (NullPointerException var6) {
-            throw new RuntimeException("Accessor：需要实例！", var6);
+            return (Y) method.invoke(instance, args);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Accessor：需要实例！", e);
         }
     }
     
@@ -125,8 +125,8 @@ public class Accessor {
         try {
             Class<T> clazz = (Class<T>) Class.forName(className);
             return clazz;
-        } catch (ClassNotFoundException var2) {
-            throw new RuntimeException("Accessor：要不再考虑清楚？", var2);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Accessor：要不再考虑清楚？", e);
         }
     }
     
@@ -134,8 +134,8 @@ public class Accessor {
         try {
             Class<Y> innerClass = (Class<Y>) Class.forName(outerClass.getName() + "$" + innerClassName);
             return innerClass;
-        } catch (ClassNotFoundException var3) {
-            throw new RuntimeException(var3);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }
